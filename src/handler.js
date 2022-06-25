@@ -27,7 +27,7 @@ const addBook = (request, h) => {
       .code(400);
     return response;
   }
-  if (readPage >= pageCount) {
+  if (readPage > pageCount) {
     const response = h
       .response({
         status: "fail",
@@ -90,7 +90,6 @@ const addBook = (request, h) => {
 
 const showBook = (request, h) => {
   const temp_note = [...notes];
-  temp_note.forEach((name) => (name.name = name.name.toLowerCase()));
   var query = request.query;
 
   if (query.finished) {
@@ -116,7 +115,8 @@ const showBook = (request, h) => {
     for (var key in query) {
       if (key !== "name") {
         if (item[key] === undefined || item[key] !== query[key]) return false;
-      } else if (!isSimmilarity(item[key], query[key])) return false;
+      } else if (!isSimmilarity(item[key].toLowerCase(), query[key]))
+        return false;
     }
 
     return true;
